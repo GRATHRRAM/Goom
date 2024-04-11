@@ -20,13 +20,13 @@ void Move_Player(Vector2 *Player, float speed) {
 }
 
 void Draw_Map2D(Map *map) {
-  uint16_t xo,yo,i;
+  uint16_t i = 0;
 
   printf("*map.maparr == %p\n\n\n\n\n",map->MapArr);
 
   for(uint16_t y = 0; y < map->MapSizeY; ++y) {
     for(uint16_t x = 0; x < map->MapSizeX; ++x) {
-      xo = x*map->size; yo = y*map->size;
+      uint16_t xo = x*map->size, yo = y*map->size;
       if(map->MapArr[i] ==1)
         DrawRectangle(xo, yo, xo+map->size, yo+map->size, GRAY);
       else DrawRectangle(xo, yo, xo+map->size, yo+map->size, BLACK);
