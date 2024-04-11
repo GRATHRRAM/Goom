@@ -23,7 +23,9 @@ int main(void) {
   map.MapSizeX = 8;
   map.MapSizeY = 8;
   map.size   = map.MapSizeX * map.MapSizeY;
-  map.MapArr = (uint8_t*) malloc(sizeof(uint8_t) * (map.size + 1));
+  map.MapArr = (uint8_t*) calloc(sizeof(uint8_t), map.size);
+  printf("map.maparr == %p\n\n\n\n\n", map.MapArr);
+  
   map.MapArr = (uint8_t*) {
     1,1,1,1,1,1,1,1,
     1,0,0,0,0,0,0,1,

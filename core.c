@@ -1,5 +1,6 @@
 #include "core.h"
 #include <stdint.h>
+#include <stdio.h>
 #define CORE_C
 #include <raylib.h>
 
@@ -19,13 +20,17 @@ void Move_Player(Vector2 *Player, float speed) {
 }
 
 void Draw_Map2D(Map *map) {
-  uint16_t xo,yo;
+  uint16_t xo,yo,i;
+
+  printf("*map.maparr == %p\n\n\n\n\n",map->MapArr);
 
   for(uint16_t y = 0; y < map->MapSizeY; ++y) {
     for(uint16_t x = 0; x < map->MapSizeX; ++x) {
       xo = x*map->size; yo = y*map->size;
-      if(map->MapArr[y*map->MapSizeX+x] == 1) DrawRectangle(xo, yo, xo+map->size, yo+map->size, GRAY);
+      if(map->MapArr[i] ==1)
+        DrawRectangle(xo, yo, xo+map->size, yo+map->size, GRAY);
       else DrawRectangle(xo, yo, xo+map->size, yo+map->size, BLACK);
+      i++;
     }
   }
 }
