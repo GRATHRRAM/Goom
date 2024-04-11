@@ -24,8 +24,7 @@ void Draw_Map2D(Map *map) {
   for(uint16_t y = 0; y < map->MapSizeY; ++y) {
     for(uint16_t x = 0; x < map->MapSizeX; ++x) {
       xo = x*map->size; yo = y*map->size;
-      if(map->MapArr[y*map->MapSizeX+x] ==1)
-        DrawRectangle(xo, yo, xo+map->size, yo+map->size, GRAY);
+      if(map->MapArr[y*map->MapSizeX+x] == 1) DrawRectangle(xo, yo, xo+map->size, yo+map->size, GRAY);
       else DrawRectangle(xo, yo, xo+map->size, yo+map->size, BLACK);
     }
   }
