@@ -1,22 +1,42 @@
 #include "core.h"
+#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #define CORE_C
 #include <raylib.h>
+#include <string.h>
+#include <stdlib.h>
 
-void Draw_Player(Vector2 Player);
-void Move_Player(Vector2 *Player, float speed);
+#define pi 3.1415926535
+
+void Draw_Player(Player *player);
+void Move_Player(Player *player, float speed);
 void Draw_Map2D(Map *map);
 
-void Draw_Player(Vector2 Player) {
-  DrawRectangleV(Player, (Vector2){10,10}, YELLOW);
+void Draw_Player(Player *player) {
+  DrawRectangleV((Vector2){player->x-5,player->y-5}, (Vector2){10,10}, YELLOW);
+  DrawLine(player->x, player->y, player->x+player->DeltaX*5, player->y+player->DeltaY*5, GREEN);
 }
 
-void Move_Player(Vector2 *Player, float speed) {
-  if(IsKeyDown(KEY_A)) Player->x -= speed;
-  if(IsKeyDown(KEY_D)) Player->x += speed;
-  if(IsKeyDown(KEY_W)) Player->y -= speed;
-  if(IsKeyDown(KEY_S)) Player->y += speed;
+void Move_Player(Player *player, float speed) {
+  if(IsKeyDown(KEY_A)) {
+    player->Angle -= 0.1;
+    if(player->Angle < 0) {
+      player->Angle += 2*pi;
+    } 
+    player->DeltaX=cos(player->Angle)*5;
+    player->DeltaY=sin(player->Angle)*5;
+  }
+  if(IsKeyDown(KEY_D)) {
+    player->Angle += 0.1;
+    if(player->Angle > 2*pi) {
+      player->Angle -= 2*pi;
+    } 
+    player->DeltaX=cos(player->Angle)*5;
+    player->DeltaY=sin(player->Angle)*5;
+  }
+  if(IsKeyDown(KEY_W)) {player->x += player->DeltaX * speed;player->y += player->DeltaY * speed;}
+  if(IsKeyDown(KEY_S)) {player->x -= player->DeltaX * speed;player->y -= player->DeltaY * speed;}
 }
 
 void Draw_Map2D(Map *map) {
@@ -31,4 +51,10 @@ void Draw_Map2D(Map *map) {
       i++;
     }
   }
+}
+
+void Set_map_alloc(Map *map, const uint8_t *level) {
+  map->size   = map->MapSizeX * map->MapSizeY;
+  map->MapArr = (uint8_t*) calloc(sizeof(uint8_t), map->size);
+  memcpy(map->MapArr, level, map->size);
 }

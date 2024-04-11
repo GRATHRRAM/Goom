@@ -11,9 +11,18 @@ typedef struct Map {
 uint8_t *MapArr;
 } Map;
 
-void Draw_Player(Vector2 Player);
-void Move_Player(Vector2 *Player, float speed);
+typedef struct Player {
+  float x;
+  float y;
+  float DeltaX;
+  float DeltaY;
+  float Angle;
+} Player;
+
+void Draw_Player(Player *player);
+void Move_Player(Player *player, float speed);
 
 void Draw_Map2D(Map *map);
 
+void Set_map_alloc(Map *map, const uint8_t *level); 
 #endif // !CORE_H
