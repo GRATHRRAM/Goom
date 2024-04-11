@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "core.h"
 #include <stdio.h>
+#include <string.h>
 
 #define Window_Wight 800
 #define Window_Hight 600
@@ -24,18 +25,19 @@ int main(void) {
   map.MapSizeY = 8;
   map.size   = map.MapSizeX * map.MapSizeY;
   map.MapArr = (uint8_t*) calloc(sizeof(uint8_t), map.size);
-  printf("map.maparr == %p\n\n\n\n\n", map.MapArr);
   
-  map.MapArr = (uint8_t*) {
+  const uint8_t level[] = {  
     1,1,1,1,1,1,1,1,
     1,0,0,0,0,0,0,1,
-    1,0,0,0,0,0,0,1,
-    1,0,0,0,0,0,0,1,
-    1,1,1,1,0,0,0,1,
-    1,0,0,0,0,0,0,1,
+    1,0,1,1,0,1,0,1,
+    1,0,0,0,0,1,0,1,
+    1,0,1,0,0,1,0,1,
+    1,0,1,1,0,1,0,1,
     1,0,0,0,0,0,0,1,
     1,1,1,1,1,1,1,1,
   };
+
+  memcpy(map.MapArr, level, map.size);
 
   while(!WindowShouldClose()) {
     Move_Player(&Player, GetFrameTime()*GetFPS()*speed);
