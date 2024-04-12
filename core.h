@@ -24,5 +24,7 @@ void Move_Player(Player *player, float speed);
 
 void Draw_Map2D(Map *map);
 
-void Set_map_alloc(Map *map, const uint8_t *level); 
+void Set_map_alloc(Map *map, const uint8_t *level);
+
+void DrawRays3D(Player *player, Map *map); 
 #endif // !CORE_H

@@ -45,6 +45,7 @@ int main(void) {
     ClearBackground(DARKBLUE);
     Draw_Map2D(&map);
     Draw_Player(&player);
+    DrawRays3D(&player, &map); 
     EndDrawing();
   }
   

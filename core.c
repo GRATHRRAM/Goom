@@ -12,6 +12,7 @@
 void Draw_Player(Player *player);
 void Move_Player(Player *player, float speed);
 void Draw_Map2D(Map *map);
+void DrawRays3D(Player *player, Map *map); 
 
 void Draw_Player(Player *player) {
   DrawRectangleV((Vector2){player->x-5,player->y-5}, (Vector2){10,10}, YELLOW);
@@ -57,4 +58,39 @@ void Set_map_alloc(Map *map, const uint8_t *level) {
   map->size   = map->MapSizeX * map->MapSizeY;
   map->MapArr = (uint8_t*) calloc(sizeof(uint8_t), map->size);
   memcpy(map->MapArr, level, map->size);
+}
+
+void DrawRays3D(Player *player, Map *map) {
+  int r,mx,my,mp,dof;
+  float rx,ry,ra,xo,yo;
+  ra=player->Angle;
+  for(r=0;r<1;++r) {
+    dof=0;
+    float aTan=-1/tan(ra);
+    if(ra>pi) {
+      ry=(((int)player->y>>6)<<6)-0.0001;
+      rx=(player->y-ry) * aTan+player->x;
+      yo=-64;
+      xo=-yo*aTan;
+    }
+    if(ra<pi) {
+      ry=(((int)player->y>>6)<<6)+64;
+      rx=(player->y-ry) * aTan+player->x;
+      yo=64;
+      xo=-yo*aTan;
+    }
+    if(ra==0 || ra==pi) {
+      rx=player->x;
+      ry=player->y;
+      dof=8;
+    }
+    while(dof<8) {
+      mx=(int) (rx)>>6;
+      my=(int) (ry)>>6;
+      mp=my*map->MapSizeX+mx;
+      if(mp<map->size && map->MapArr[mp]==1) dof=8;
+      else {rx+=xo; ry+=yo; dof+=1;}
+    }
+    DrawLine(player->x-5, player->y-5, rx, ry, GREEN);
+  }
 }
