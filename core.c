@@ -7,6 +7,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define P2 M_PI / 2 
+#define P3 3 * M_PI / 2
+
 void Draw_Player(Player *player);
 void Move_Player(Player *player, float speed);
 void Draw_Map2D(Map *map);
@@ -89,6 +92,35 @@ void DrawRays3D(Player *player, Map *map) {
       if(mp>0 && mp<map->size && map->MapArr[mp]==1) dof=8;
       else {rx+=xo; ry+=yo; dof+=1;}
     }
-    DrawLine(player->x, player->y, rx, ry, GREEN);
+    DrawLineEx((Vector2){player->x, player->y},(Vector2){rx, ry},3, GREEN);
+  }
+  for(r=0;r<1;++r) {
+    dof=0;
+    float nTan=-tan(ra);
+      if(ra>P2 && ra<P3) {
+      rx=(((int)player->x>>6)<<6)-0.0001;
+      ry=(player->x-rx) * nTan+player->y;
+      xo=-64;
+      yo=-xo*nTan;
+    }
+    if(ra<P2 || ra>P3) {
+      rx=(((int)player->x>>6)<<6)+64;
+      ry=(player->x-rx) * nTan+player->y;
+      xo=64;
+      yo=-xo*nTan;
+    }
+    if(ra==0 || ra==M_PI) {
+      rx=player->x;
+      ry=player->y;
+      dof=8;
+    }
+    while(dof<8) {
+      mx=(int) (rx)>>6;
+      my=(int) (ry)>>6;
+      mp=my*map->MapSizeX+mx;
+      if(mp>0 && mp<map->size && map->MapArr[mp]==1) dof=8;
+      else {rx+=xo; ry+=yo; dof+=1;}
+    }
+    DrawLine(player->x, player->y, rx, ry, RED);
   }
 }
