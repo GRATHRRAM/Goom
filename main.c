@@ -8,8 +8,8 @@
 
 #define pi 3.1415926535
 
-#define Window_Wight 800
-#define Window_Hight 600
+#define Window_Wight 1200
+#define Window_Hight 700
 #define true  1
 #define false 0
 
@@ -19,7 +19,9 @@ int main(void) {
   InitWindow(Window_Wight, Window_Hight, "Goom");
   SetTargetFPS(60);
 
-  Player player = {300,300,0,0,0};
+  Player player = {300,300,
+  cos(0)*5,
+  sin(0)*5,0};
 
   Map map = {0};
   map.MapSizeX = 8;
@@ -37,7 +39,6 @@ int main(void) {
   };
   
   Set_map_alloc(&map, level);
-
   while(!WindowShouldClose()) {
     Move_Player(&player, GetFrameTime()*GetFPS()*speed);
 

@@ -7,31 +7,29 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define pi 3.1415926535
-
 void Draw_Player(Player *player);
 void Move_Player(Player *player, float speed);
 void Draw_Map2D(Map *map);
 void DrawRays3D(Player *player, Map *map); 
 
 void Draw_Player(Player *player) {
-  DrawRectangleV((Vector2){player->x-5,player->y-5}, (Vector2){10,10}, YELLOW);
-  DrawLine(player->x, player->y, player->x+player->DeltaX*5, player->y+player->DeltaY*5, GREEN);
+  DrawRectangleV((Vector2){player->x-5,player->y-5}, (Vector2){10,10}, YELLOW);  
+  DrawLineEx((Vector2){player->x, player->y},(Vector2){player->x+player->DeltaX*7, player->y+player->DeltaY*7}, 4 ,YELLOW);
 }
 
 void Move_Player(Player *player, float speed) {
   if(IsKeyDown(KEY_A)) {
     player->Angle -= 0.1;
     if(player->Angle < 0) {
-      player->Angle += 2*pi;
+      player->Angle += 2*M_PI;
     } 
     player->DeltaX=cos(player->Angle)*5;
     player->DeltaY=sin(player->Angle)*5;
   }
   if(IsKeyDown(KEY_D)) {
     player->Angle += 0.1;
-    if(player->Angle > 2*pi) {
-      player->Angle -= 2*pi;
+    if(player->Angle > 2*M_PI) {
+      player->Angle -= 2*M_PI;
     } 
     player->DeltaX=cos(player->Angle)*5;
     player->DeltaY=sin(player->Angle)*5;
@@ -67,19 +65,19 @@ void DrawRays3D(Player *player, Map *map) {
   for(r=0;r<1;++r) {
     dof=0;
     float aTan=-1/tan(ra);
-    if(ra>pi) {
+      if(ra>M_PI) {
       ry=(((int)player->y>>6)<<6)-0.0001;
       rx=(player->y-ry) * aTan+player->x;
       yo=-64;
       xo=-yo*aTan;
     }
-    if(ra<pi) {
+    if(ra<M_PI) {
       ry=(((int)player->y>>6)<<6)+64;
       rx=(player->y-ry) * aTan+player->x;
       yo=64;
       xo=-yo*aTan;
     }
-    if(ra==0 || ra==pi) {
+    if(ra==0 || ra==M_PI) {
       rx=player->x;
       ry=player->y;
       dof=8;
@@ -88,9 +86,9 @@ void DrawRays3D(Player *player, Map *map) {
       mx=(int) (rx)>>6;
       my=(int) (ry)>>6;
       mp=my*map->MapSizeX+mx;
-      if(mp<map->size && map->MapArr[mp]==1) dof=8;
+      if(mp>0 && mp<map->size && map->MapArr[mp]==1) dof=8;
       else {rx+=xo; ry+=yo; dof+=1;}
     }
-    DrawLine(player->x-5, player->y-5, rx, ry, GREEN);
+    DrawLine(player->x, player->y, rx, ry, GREEN);
   }
 }
